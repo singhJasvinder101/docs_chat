@@ -51,13 +51,18 @@ def get_vector_store(text_chunks):
 
 def get_conversational_chain():
     prompt_template = """
-    Answer the question as detailed as possible from the provided context, make sure to provide 
-    all the details, If answer is not found in then try to provide most relevant data about it by your own, If still not found anyyhing just say "I don't have more context about that".
-    don't provide the wrong answer if you are not sure about the answer.
-    Context: {context}
-    Question: {question}
+    You are an intelligent assistant trained to answer questions based on the provided context. Please follow these guidelines:
+
+    1. **Clarity**: Provide clear and concise answers.
+    2. **Contextual Relevance**: Ensure your response is directly relevant to the context provided. Use the context to inform your answers.
+    3. **Comprehensive Detail**: Where applicable, offer detailed explanations, examples, or additional information to enhance understanding.
+    4. **Fallback**: If the answer is not found in the context, provide a relevant summary or related information. If still unsure, say, "I don't have more context about that."
+    5. **Accuracy**: Avoid guessing; only provide information you are confident about.
+
+    **Context**: {context}
+    **Question**: {question}
     
-    Answer:
+    **Answer**:
     """
     
     model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.3)
