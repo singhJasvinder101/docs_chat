@@ -7,7 +7,7 @@ import os
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import google.generativeai as genai
 
-from langchain.vectorstores import FAISS  # FAISS CPU here for very much pdf's together parallel processing use gpu
+from langchain_community.vectorstores import FAISS  # FAISS CPU here for very much pdf's together parallel processing use gpu
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
@@ -19,14 +19,18 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 
 def get_pdf_text(pdf_docs):
-    text=""
+    text = ""
     for pdf in pdf_docs:
-        # read multiple pdf's
-        pdf_reader= PdfReader(pdf)
-        # read pages of each
+        pdf_reader = PdfReader(pdf)
         for page in pdf_reader.pages:
-            text+= page.extract_text()
-    return  text
+            page_text = page.extract_text()
+            if page_text:  # Check if text was extracted
+                text += page_text
+            else:
+                print("No text found on this page.")
+    print("Extracted text length:", len(text)) 
+    return text
+
 
 
 
